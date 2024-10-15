@@ -14,12 +14,21 @@ pip install .
 
 ## Usage
 
-run: `askai what port is RDP using?`
+run: 
 
-output: `RDP uses port 3389.`
+`askai what port is RDP using?`
 
-options: ´askai [-b] [-4] your questions´
+output: 
+
+`RDP uses port 3389.`
+
+
+options: 
+
+`askai [-b] [-4] your questions`
+
 -4 = use ChatGPT 4o instead 3.5 turbo
+
 -b = don't use short responses
 
 
