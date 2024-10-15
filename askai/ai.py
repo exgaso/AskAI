@@ -3,12 +3,12 @@ import json
 
 class gpt:
     
-    def __init__(self, instructions, api_key) -> None:
+    def __init__(self, model, instructions, api_key) -> None:
         self.gpt = openai.OpenAI(api_key=api_key)
         self.tools = []
         self.callbacks = {}
         self.messages=[{"role": "system", "content": instructions}]
-        self.model = "gpt-3.5-turbo"
+        self.model = model
 
     def add_tool(self, toolname, desc, params, callback):
         if params is None:

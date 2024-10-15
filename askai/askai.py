@@ -1,6 +1,8 @@
 import sys
 import os
 import platform
+from rich.markdown import Markdown
+from rich.console import Console
 from askai.ai import gpt
 
 def getAPIKEY():
@@ -18,16 +20,36 @@ def getAPIKEY():
 # def feedback_function_example(number):
 #     print(f"The example function got executed with nubmer {number}")
 
-def askai(question):
+def main():
+    my_MODEL = "gpt-3.5-turbo"
     my_APIKEY = getAPIKEY()
     my_OS = platform.system()
-    llm = gpt(f"you are a little IT-assistant answering my questions only in a few words. Mostly i ask something about computers. I use {my_OS}", my_APIKEY)
+    my_INSTRUCTION = f"you are an IT-assistant answering my questions only in short sentence. Mostly i ask something about {my_OS} computers."   
+    args = sys.argv[1:]
+    if len(args) >= 1:
+        for arg in args[:]:
+            if arg[0] == "-":
+                if arg == "-4": # use version 4
+                    my_MODEL = "gpt-4o"
+                if arg == "-b": # dont use short response
+                    my_INSTRUCTION = f"you are an IT-assistant. Mostly i ask something about {my_OS} computers."  
+                if arg == "-h" or arg == "--help":
+                    print("askai [-4] [-b] your question")
+                    quit()
+                args.remove(arg)
+            else:
+                break
+    if len(args) == 0:
+        question = input("Your question: ")
+    else:
+        question = (' '.join(args))
+    llm = gpt(my_MODEL, my_INSTRUCTION, my_APIKEY)
     # llm.add_tool("function_example", "a function example for demonstation", {"type": "object","properties": { "number": { "type": "number","description": "just a random number",}},"required": ["number"],}, feedback_function_example)
     rsp = llm.ask(question)
-    print(rsp)    
+    concole = Console()
+    rspmd = Markdown(rsp)
+    concole.print(rspmd)   
 
-def main():
-    askai(' '.join(sys.argv[1:]))
 
 if __name__ == '__main__':
     main()
